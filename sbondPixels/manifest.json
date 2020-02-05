@@ -6,14 +6,35 @@
 
   "description": "Shows the current resolution of the window.",
 
+	"applications": {
+		"gecko": {
+			"id": "pixels@sbond.co"
+		}
+	},
+
   "icons": {
-    "48": "icons/icon.svg"
+		"24": "icons/icon.svg",
+    "48": "icons/icon.svg",
+		"96": "icons/icon.svg"
+  },
+	
+	"permissions": [
+    "storage"
+	],
+  
+  "browser_action": {
+    "default_icon": "icons/icon.svg",
+    "default_title": "sbondPixels"
+  },
+	
+	"background": {
+    "scripts": ["js/state.js"]
   },
 
   "content_scripts": [
-    {
+		{
       "matches": ["<all_urls>"],
-      "js": ["sbondPixels.js"]
+      "js": ["js/main.js", "js/default.js"]
     }
   ]
 
