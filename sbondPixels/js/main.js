@@ -20,7 +20,7 @@ pxlBoxS.padding = "2px 5px";
 function showPxBx(show){
 	if(show){
 		pxlBoxS.display = "";
-		pxlBox.innerHTML = getRes();
+		pxlBox.textContent = getRes();
 		enabled = 1;
 	}
 	else{
