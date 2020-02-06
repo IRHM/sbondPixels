@@ -8,6 +8,7 @@ var pxlBox = document.createElement("SPAN");
 // Style element
 var pxlBoxS = pxlBox.style;
 
+pxlBoxS.display = "none";
 pxlBoxS.position = "fixed";
 pxlBoxS.zIndex = "9999999999";
 pxlBoxS.top = "5px";
@@ -20,9 +21,11 @@ function showPxBx(show){
 	if(show){
 		pxlBoxS.display = "";
 		pxlBox.innerHTML = getRes();
+		enabled = 1;
 	}
 	else{
 		pxlBoxS.display = "none";
+		enabled = 0;
 	}
 }
 
