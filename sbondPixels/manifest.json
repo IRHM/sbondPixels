@@ -5,7 +5,6 @@
 	"short_name": "sbPx",
   "version": "1.0",
   "description": "Shows the current resolution of the window.",
-	"categories": ["UI", "web", "develop", "resolution", "dimensions"],
 
 	"applications": {
 		"gecko": {
