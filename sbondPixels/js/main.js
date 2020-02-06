@@ -36,7 +36,6 @@ function getRes(){
 
 // Listen for when to enable/disable px bx
 browser.storage.onChanged.addListener(function(data){
-	console.log(data.settings.newValue.enabled);
 	if(data.settings.newValue.enabled){
 		// Enable
 		showPxBx(1);
@@ -60,7 +59,6 @@ window.addEventListener("resize", function(event){
 // Set default display for px bx
 browser.storage.local.get().then(function(data){
   enabled = data.settings.enabled;
-	console.log(enabled);
 	if(enabled){
 		// Enable
 		showPxBx(1);
