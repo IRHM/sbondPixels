@@ -1,7 +1,9 @@
+function onError(e){
+  console.error(e);
+}
+
 // Create element
 var pxlBox = document.createElement("SPAN");
-
-//pxlBox.setAttribute("id", "pxlBox");
 
 // Style element
 var pxlBoxS = pxlBox.style;
@@ -14,8 +16,17 @@ pxlBoxS.backgroundColor = "black";
 pxlBoxS.color = "white";
 pxlBoxS.padding = "2px 5px";
 
-// Get and set window dimensions
+function showPxBx(show){
+	if(show){
+		pxlBoxS.display = "";
+		pxlBox.innerHTML = getRes();
+	}
+	else{
+		pxlBoxS.display = "none";
+	}
+}
 
+// Get window dimensions
 function getRes(){
   var windowWidth = window.innerWidth;
   var windowHeight = window.innerHeight;
@@ -23,32 +34,42 @@ function getRes(){
   return windowWidth + ' x ' + windowHeight;
 }
 
-// Re-set res on resize
-window.addEventListener("resize", function(event){
-  pxlBox.innerHTML = getRes();
-});
-
-// Set res for first time
-pxlBox.innerHTML = getRes();
-
-// Listen for message when to enable/disable px bx
-browser.runtime.onMessage.addListener((message) => {
-	if(message.enabled === 1){
-		console.log(message);
-		pxlBoxS.display = "";
-	} 
-	else if(message.enabled === 0){
-		console.log(message);
-		pxlBoxS.display = "none";
+// Listen for when to enable/disable px bx
+browser.storage.onChanged.addListener(function(data){
+	console.log(data.settings.newValue.enabled);
+	if(data.settings.newValue.enabled){
+		// Enable
+		showPxBx(1);
 	}
 	else{
-		onError("Message not understood");
+		// Disable
+		showPxBx(0);
 	}
 });
 
-function onError(e){
-  console.error(e);
-}
+// Re-set res on resize
+window.addEventListener("resize", function(event){
+	if(enabled){
+		showPxBx(1);
+	}
+	else{
+		showPxBx(0);
+	}
+});
+
+// Set default display for px bx
+browser.storage.local.get().then(function(data){
+  enabled = data.settings.enabled;
+	console.log(enabled);
+	if(enabled){
+		// Enable
+		showPxBx(1);
+	}
+	else{
+		// Disable
+		showPxBx(0);
+	}
+});
 
 // Append element to end of body
 document.body.appendChild(pxlBox);

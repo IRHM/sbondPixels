@@ -2,14 +2,6 @@ function onError(e){
   console.error(e);
 }
 
-async function sendMessageAll(msg){
-	browser.tabs.query({}, function(tabs){
-    for (var i=0; i < tabs.length; ++i){
-			browser.tabs.sendMessage(tabs[i].id, msg);
-    }
-	});
-}
-
 async function storeState(state){
   browser.storage.local.set({
     settings: {
@@ -19,22 +11,26 @@ async function storeState(state){
 }
 
 async function checkState(restoredSettings){
-	var enabled = restoredSettings.settings.enabled;
-	
-	if(enabled){
-		await storeState(0);
-		sendMessageAll({enabled: 0});
+	var settings = {
+		enabled: 1
 	}
+
+	if(!restoredSettings.settings){
+    browser.storage.local.set({settings});
+  }
 	else{
-		await storeState(1);
-		sendMessageAll({enabled: 1});
-	}
+		var enabled = restoredSettings.settings.enabled;
 	
-	// 100ms timeout until window.close
-	await new Promise(r => setTimeout(r, 100));
+		if(enabled){
+			await storeState(0);
+		}
+		else{
+			await storeState(1);
+		}
+	}
 }
 
-browser.browserAction.onClicked .addListener((tab) => {
+browser.browserAction.onClicked.addListener((tab) => {
 	const getStorage = browser.storage.local.get();
 	getStorage.then(checkState, onError);
 });
